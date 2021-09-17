@@ -1,8 +1,24 @@
 <template>
   <div class="hello">
   <h3>Post</h3>
+
+<div class="post">
+  <h3 class="title">{{post.title}}</h3>
+  <h6 class="text">{{post.body}}</h6>
   
-  
+
+</div>
+  <div class="comments">
+    <h4>Comments</h4>
+    <div class="comment" v-for="comment in comments" :key="comment.id">
+      <div class="ava">
+        <img src="https://cdn141.picsart.com/326383677140211.png?type=webp&to=min&r=640" alt="">
+        <div class="email">{{comment.email}}</div>
+        </div>
+      <div class="name">{{comment.name}}</div>
+      <div class="body">{{comment.body}}</div>
+    </div>
+  </div>
   
         
   </div>
@@ -12,28 +28,42 @@
 export default {
   name: 'Post',
   props: {
-    postId:''
   },
   data(){
   return{
-    
+    post:{},
+    comments:[],
 
   }
   },
+  methods:{
+   getComments(){
+     
+   }
+  },
   async created() {
+// ------информация поста
+    let responsePosts = await fetch("https://jsonplaceholder.typicode.com/posts");
+    let contentPosts = await responsePosts.json();
    
-    let response = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${1}`);
+    contentPosts.forEach(post =>{
 
-    let content = await response.json();
-    console.log(content)
-    this.posts = content
+      if (post.id == this.$route.params.Id){
+        this.post = post
+      }
+    })
+// -----комментарии к посту
+
+
+    let responseComments = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${this.$route.params.Id}`);
+    let contentComments = await responseComments.json();
+    this.comments = contentComments
+    console.log(contentComments)
   
 
     
   },
-  methods:{
-   
-  }
+  
   
 }
 </script>
@@ -48,5 +78,48 @@ export default {
   margin: 20px;
   text-align: center;
 }
+.post{
+  color: aliceblue;
+  padding: 15px;
+  background-color: rgb(51, 48, 48);
+  border-radius: 20px;
+}
+.title{
+
+}
+.comments{
+  margin-top: 30px;
+  color: aliceblue;
+  padding: 15px;
+  background-color: rgb(51, 48, 48);
+  border-radius: 20px;
+}
+.comment{
+  margin-bottom: 30px;
+}
+.ava{
+  display: flex;
+  align-items: center;
+}
+.ava img{
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+}
+.email{
+  margin-left: 10px;
+  font-weight: 700;
+  font-size: 18px;
+}
+.name{
+  font-weight: 500;
+  font-size: 17px;
+
+}
+.body{
+  margin-top: 10px;
+  font-size: 14px;
+}
+
 
 </style>

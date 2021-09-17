@@ -1,17 +1,15 @@
 <template>
   <div class="hello">
   <h3>Posts</h3>
+
   <div class="container-posts">
-    <div class="post" v-for="post in posts" :key="post.id">
+    <div class="post" v-for="post in posts" :key="post.id" >
       <div class="title">{{post.title}}</div>
       <div class="text">{{post.body}}</div>
       <div class="d-auth">
-         <button type="button" class="btn btn-all" @click="postAll()">Подробнее</button>
+         <button type="button" class="btn btn-all" @click="postAll(post.id)">Подробнее</button>
         </div>
-        <router-link
-                               tag="a"
-                               class="button"
-                               :to="{name: 'historyId', params: {id: historyItem.id, date: historyItem.date}}"/>
+
     </div>
     
   </div>
@@ -36,15 +34,14 @@ export default {
     let response = await fetch("https://jsonplaceholder.typicode.com/posts");
 
     let content = await response.json();
-    console.log(content)
     this.posts = content
-  
+    console.log(content)
 
     
   },
   methods:{
-   postAll(){
-     this.$router.push('/post')
+   postAll(idPost){
+     this.$router.push(`/post/${idPost}`)
    }
   }
   
