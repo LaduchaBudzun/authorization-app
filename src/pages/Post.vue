@@ -11,10 +11,20 @@
   <div class="comments">
     <h4>Comments</h4>
     <div class="comment" v-for="comment in comments" :key="comment.id">
-      <div class="ava">
-        <img src="https://cdn141.picsart.com/326383677140211.png?type=webp&to=min&r=640" alt="">
-        <div class="email">{{comment.email}}</div>
+
+      <div class="ava" v-for="user in users" :key="user.id">
+        
+
+        <div class="email" v-if="comment.id == user.id">
+          <img src="https://cdn141.picsart.com/326383677140211.png?type=webp&to=min&r=640" alt="">
+          {{user.name}}, {{user.company.name}}</div>
         </div>
+        <!-- <div class="email" >
+          <img src="https://cdn141.picsart.com/326383677140211.png?type=webp&to=min&r=640" alt="">
+          {{comment.email}}</div>
+        </div> -->
+
+
       <div class="name">{{comment.name}}</div>
       <div class="body">{{comment.body}}</div>
     </div>
@@ -33,6 +43,7 @@ export default {
   return{
     post:{},
     comments:[],
+    users:[]
 
   }
   },
@@ -52,16 +63,19 @@ export default {
         this.post = post
       }
     })
+
 // -----комментарии к посту
-
-
     let responseComments = await fetch(`https://jsonplaceholder.typicode.com/comments?postId=${this.$route.params.Id}`);
     let contentComments = await responseComments.json();
     this.comments = contentComments
     console.log(contentComments)
   
 
-    
+// -----Имя и компания 
+    let responseCommentators = await fetch(`https://jsonplaceholder.typicode.com/users`);
+    let contentCommentators = await responseCommentators.json();
+    this.users = contentCommentators
+    console.log(contentCommentators)
   },
   
   
@@ -107,7 +121,6 @@ export default {
   border-radius: 100%;
 }
 .email{
-  margin-left: 10px;
   font-weight: 700;
   font-size: 18px;
 }
