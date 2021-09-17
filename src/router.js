@@ -14,8 +14,9 @@ export default new VueRouter({
       component: Posts,
     },
     {
-      path: "/post",
+      path: "/post/:Id",
       component: Post,
+      props: true,
     },
   ],
   mode: "history", // отключение '#'
