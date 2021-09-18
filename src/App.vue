@@ -1,8 +1,6 @@
 <template>
   <div class="bg">
     <div class="container" >
-    <router-link to="/posts">Перейти к Posts</router-link>
-    <router-link to="/">Перейти к Login</router-link>
     <router-view/>
     
 

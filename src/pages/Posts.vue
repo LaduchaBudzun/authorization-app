@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    <router-link to="/">Перейти к Login</router-link>
   <h3>Posts</h3>
 
   <div class="container-posts">

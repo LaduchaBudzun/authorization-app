@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
-  <h3>Post</h3>
+    <router-link to="/posts">Перейти к Posts</router-link>
+    <h3>Post</h3>
 
     <div class="post">
       <h3 class="title">{{post.title}}</h3>
