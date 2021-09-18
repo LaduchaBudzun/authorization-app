@@ -64,6 +64,7 @@ export default {
   grid-template-rows: 1fr;
   gap: 30px;
 }
+
 .post{
 
  max-width: 220px;
@@ -110,5 +111,16 @@ max-height: 40px;
 -moz-box-shadow: 1px 1px 12px 0px rgba(255, 255, 255, 0.2);
 box-shadow: 1px 1px 12px 0px rgba(255, 255, 255, 0.2);
 
+}
+@media screen and (max-width: 700px) {
+  .container-posts{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  margin: 10px;
+}
+.post{
+  margin: 0 auto;
+}
 }
 </style>

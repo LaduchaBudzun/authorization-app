@@ -8,15 +8,18 @@
         </svg>
         </a>
       </div>
-    <h1>{{ msg }}</h1>
+    
         <form class="form">
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label">Email address</label>
-          <input  class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="email">
+          <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="email">
+          <span class="feedback" v-bind:class="{ feedback_active: emailValidate }">*Введите корректный email</span>
         </div>
         <div class="mb-3">
           <label for="exampleInputPassword1" class="form-label">Password</label>
           <input type="password" class="form-control"  v-model="password">
+          <span class="feedback" v-bind:class="{ feedback_active: passLength }">*Пароль должен содержать минимум 6 символов</span>
+          <span class="feedback" v-bind:class="{ feedback_active: passValidate }">*Пароль должен содержать латинские буквы и цифры</span>
         </div>
       
         <div class="d-auth">
@@ -30,28 +33,62 @@
 export default {
   name: 'Authorization',
   props: {
-  msg: String,
   },
   data(){
   return{
     email:'',
-    password:''
+    password:'',
+    emailValidate:false,
+    passLength:false,
+    passValidate:false
   }
   },
   methods:{
+    emailVerification(){
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(this.email).toLowerCase());
+    },
+
     SignIn(){
+      if(!this.emailVerification()){
+        this.emailValidate = true
+        return
+      }else{
+        this.emailValidate = false
+      }
+
+      if(this.password.length < 6){
+        this.passLength = true
+        return
+      }else if(!this.passwordVerification()){
+        this.passLength = false
+        this.passValidate = true
+        return
+      }else{
+        this.passLength = false
+        this.passValidate = false
+      }
+
+
+        localStorage.setItem('email',this.email)
+        localStorage.setItem('password',this.password)
+        //this.$route - текущий маршрут
+        this.$router.push('/posts')
       
-      localStorage.setItem('email',this.email)
-      localStorage.setItem('password',this.password)
-      //this.$route - текущий маршрут
-      this.$router.push('/posts')
-    }
+    },
+    
+    passwordVerification(){
+          const re = /^[A-Za-z0-9]+$/ // только латинские буквы и цифры
+          return re.test((this.password).toLowerCase());
+
+    },
+  
   }
   
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 .hello{
   max-width: 500px;
@@ -70,5 +107,19 @@ export default {
   background-color: rgb(199, 0, 0);
   color: white;
   font-size: 18px;
+  transition: .3s ease;
+}
+.btn-auth:hover{
+  background: rgba(0,0,0,0);
+  color: rgb(199, 0, 0);
+  box-shadow: inset 0 0 0 3px rgb(199, 0, 0)
+}
+.feedback_active{
+  display: block !important;
+}
+.feedback{
+  color: red;
+  font-size:12px;
+  display: none;
 }
 </style>
